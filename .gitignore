@@ -1,3 +1,5 @@
 node_modules/
 .expo/
 npm-debug.*
+react-native-packager-cache-*/
+haste-map-react-native-packager-*
