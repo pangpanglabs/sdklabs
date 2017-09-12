@@ -12,10 +12,19 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import <Pos/Pos.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
+  //P2PosInit
+  NSString* path = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
+                                                        NSUserDomainMask,
+                                                        YES) objectAtIndex:0];
+  P2PosInit(path);
+  
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
