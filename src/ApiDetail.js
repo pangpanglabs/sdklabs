@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { buildURL, callAPI } from './possdk'
 
-class ApiDetail extends React.Component {    
+class ApiDetail extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.api.path,
   });
@@ -28,10 +28,10 @@ class ApiDetail extends React.Component {
     const api = this.props.navigation.state.params.api;
     return (
       <View>
-        {Object.keys(api.params).map((k,v) => (
-          <View style={{flexDirection: 'row'}} key={k}>
-            <Text style={{flex: 1}}>{k}:</Text>
-            <TextInput style={{flex: 2}}
+        {Object.keys(api.params).map((k, v) => (
+          <View style={{ flexDirection: 'row' }} key={k}>
+            <Text style={{ flex: 1 }}>{k}:</Text>
+            <TextInput style={{ flex: 2 }}
               value={this.state.params[k]}
               onChangeText={(text) => {
                 const params = this.state.params
@@ -44,15 +44,15 @@ class ApiDetail extends React.Component {
             />
           </View>
         ))}
-        <Text style={{fontSize: 18, fontWeight: 'bold' }}>{this.state.url}</Text>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{this.state.url}</Text>
         <Button
           title='Call'
           onPress={() => {
-              const start = new Date()
-              callAPI(this.state.url, res => {
-                this.setState({res: res, elapsedTime: Math.abs(new Date()-start)})
-              })
-            }
+            const start = new Date()
+            callAPI(this.state.url).then(res => {
+              this.setState({ res: res, elapsedTime: Math.abs(new Date() - start) })
+            })
+          }
           }
         />
         <ScrollView>

@@ -1,42 +1,28 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, NativeModules } from 'react-native';
+let LabsBridge = NativeModules.LabsBridge;
 
 const getToken = async () => await AsyncStorage.getItem('@POSSDK:token')
 const setToken = async (token) => await AsyncStorage.setItem('@POSSDK:token', token)
 
-export const buildURL = (path, param) => { 
+export const buildURL = (path, param) => {
   let url = 'pp://staging' + path + "?"
-  if(param) {
+  if (param) {
     for (var [key, value] of Object.entries(param)) {
-      if(value) url += key + '=' + value + '&'
+      if (value) url += key + '=' + value + '&'
     }
   }
-  return url.slice(0,-1)
+  return url.slice(0, -1)
 }
 
-export const callAPI = async (url, cb) => {  
-  let backendURL = 'https://staging.p2shop.cn/jan-api' + url.substring(12)
-  
-  let fetchInit = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + await getToken()
-    }
-  }
-
-  setTimeout(() => {
-    fetch(backendURL, fetchInit)
-    .then(function(response) {
-      return response.json()
-    })
-    .then(function(json) {
-      if(url.substring(12,21) === '/account/' && json.success){
-        setToken(json.result.token)
-        console.log('set token:',json.result.token)
-      }
-      if (cb) cb(json)
-    }).catch(function(ex) {        
-      console.log('parsing failed', ex)
-    })
-  }, 0)
+export const callAPI = (url) => {
+  console.log(url);
+  // let backendURL = 'https://staging.p2shop.cn/jan-api' + url.substring(12)
+  return LabsBridge.callAPI(url).then((data) => {
+    var rs = JSON.parse(data);
+    console.log(rs);
+    return rs
+  }).catch(err => {
+    console.error("err", err);
+    throw err
+  });
 }

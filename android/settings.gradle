@@ -1,0 +1,3 @@
+rootProject.name = 'sdklabs'
+
+include ':app'
